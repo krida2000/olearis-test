@@ -15,7 +15,37 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: const ColorScheme.light(
+          primary: Colors.blue,
+          onPrimary: Colors.white,
+        ),
+        buttonTheme: const ButtonThemeData(
+          buttonColor: Colors.blue,
+          disabledColor: Colors.grey,
+          textTheme: ButtonTextTheme.primary,
+        ),
+        outlinedButtonTheme: OutlinedButtonThemeData(
+          style: ButtonStyle(
+            backgroundColor: WidgetStateProperty.resolveWith((states) {
+              if (states.contains(WidgetState.disabled)) {
+                return Colors.black12;
+              }
+
+              return Colors.blue;
+            }),
+            foregroundColor: WidgetStateProperty.resolveWith((states) {
+              if (states.contains(WidgetState.disabled)) {
+                return Colors.black26;
+              }
+
+              return Colors.white;
+            }),
+            shape: WidgetStateProperty.all(
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+            ),
+            side: WidgetStateProperty.all(BorderSide.none),
+          ),
+        ),
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,

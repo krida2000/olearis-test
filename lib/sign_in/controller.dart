@@ -1,12 +1,16 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
+import '/main.dart';
+
 class SignInController extends GetxController {
   TextEditingController loginController = TextEditingController();
 
   TextEditingController passwordController = TextEditingController();
 
   RxBool isValid = RxBool(false);
+
+  RxBool signingIn = RxBool(false);
 
   @override
   void onInit() {
@@ -21,6 +25,19 @@ class SignInController extends GetxController {
     loginController.dispose();
     passwordController.dispose();
     super.dispose();
+  }
+
+  Future<void> signIn(BuildContext context) async {
+    if (isValid.isTrue) {
+      signingIn.value = true;
+      await Future.delayed(1.seconds);
+
+      if (context.mounted) {
+        Navigator.of(context).pushNamed(Routes.markup);
+      }
+
+      signingIn.value = false;
+    }
   }
 
   void _listener() {

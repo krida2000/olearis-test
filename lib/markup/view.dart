@@ -13,15 +13,32 @@ class MarkupView extends StatelessWidget {
       builder: (MarkupController c) {
         return Scaffold(
           appBar: AppBar(
-            title: const Text('Markup'),
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            leading: IconButton(
+              icon: Icon(
+                Icons.arrow_back,
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            title: Text(
+              'Markup',
+              style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+            ),
             actions: [
               IconButton(
                 onPressed: c.addItem,
-                icon: const Icon(Icons.add),
+                icon: Icon(
+                  Icons.add,
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
               ),
               IconButton(
                 onPressed: c.removeItem,
-                icon: const Icon(Icons.remove),
+                icon: Icon(
+                  Icons.remove,
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
               ),
             ],
           ),
@@ -29,20 +46,47 @@ class MarkupView extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Image.asset(
-                  'assets/olearis.png',
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black, width: 2),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Image.asset(
+                        'assets/olearis.png',
+                      ),
+                    ),
+                  ),
                 ),
                 Obx(() {
-                  return GridView.builder(
-                    itemCount: c.itemsCount.value,
-                    shrinkWrap: true,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
+                  return Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: GridView.builder(
+                      itemCount: c.itemsCount.value,
+                      shrinkWrap: true,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 10,
+                        crossAxisSpacing: 10,
+                        childAspectRatio: 4,
+                      ),
+                      itemBuilder: (BuildContext context, int index) {
+                        return GridTile(
+                          child: Container(
+                            height: 10,
+                            width: 100,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.black, width: 2),
+                            ),
+                            child: Center(child: Text('Item $index')),
+                          ),
+                        );
+                      },
                     ),
-                    itemBuilder: (BuildContext context, int index) {
-                      return Text('Item $index');
-                    },
                   );
                 }),
               ],
