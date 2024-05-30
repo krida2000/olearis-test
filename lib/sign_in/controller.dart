@@ -8,6 +8,8 @@ class SignInController extends GetxController {
 
   TextEditingController passwordController = TextEditingController();
 
+  FocusNode passwordFocusNode = FocusNode();
+
   RxBool isValid = RxBool(false);
 
   RxBool signingIn = RxBool(false);
