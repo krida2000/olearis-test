@@ -45,7 +45,8 @@ class SignInView extends StatelessWidget {
                               onSubmitted: (_) =>
                                   c.passwordFocusNode.requestFocus(),
                               decoration: const InputDecoration(
-                                floatingLabelBehavior: FloatingLabelBehavior.auto,
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.auto,
                                 label: Text('Login'),
                               ),
                             ),
@@ -59,7 +60,8 @@ class SignInView extends StatelessWidget {
                               focusNode: c.passwordFocusNode,
                               onSubmitted: (_) => c.signIn(context),
                               decoration: const InputDecoration(
-                                floatingLabelBehavior: FloatingLabelBehavior.auto,
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.auto,
                                 label: Text('Password'),
                               ),
                             ),
