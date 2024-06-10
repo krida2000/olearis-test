@@ -30,7 +30,7 @@ class SignInController extends GetxController {
   }
 
   Future<void> signIn(BuildContext context) async {
-    if (isValid.isTrue) {
+    if (isValid.isTrue && signingIn.isFalse) {
       signingIn.value = true;
       await Future.delayed(1.seconds);
 

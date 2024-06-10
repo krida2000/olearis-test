@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -42,13 +43,54 @@ class MarkupView extends StatelessWidget {
               ),
             ],
           ),
-          body: LayoutBuilder(builder: (_, constraints) {
-            return SingleChildScrollView(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  minHeight: constraints.maxHeight,
-                ),
-                child: IntrinsicHeight(
+          body: SafeArea(
+            child: CustomScrollView(
+              reverse: true,
+              physics: const KeepPositionScrollPhysics(),
+              dragStartBehavior: DragStartBehavior.down,
+              slivers: [
+                Obx(() {
+                  final int count = (c.itemsCount.value / 2).ceil();
+
+                  return SliverPadding(
+                    padding: const EdgeInsets.all(10),
+                    sliver: SliverList.builder(
+                        itemCount: count,
+                        itemBuilder: (_, i) {
+                          i = count - i - 1;
+
+                          Widget item(int i) {
+                            return Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: AspectRatio(
+                                  aspectRatio: 4,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color: Colors.black, width: 2),
+                                    ),
+                                    child: Center(child: Text('Item $i')),
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
+
+                          final List<Widget> items = [item(i * 2)];
+
+                          if (i == count - 1 && !c.itemsCount.value.isEven) {
+                            items.add(Expanded(child: Container(height: 50)));
+                          } else {
+                            items.add(item(i * 2 + 1));
+                          }
+
+                          return Row(key: Key(i.toString()), children: items);
+                        }),
+                  );
+                }),
+                SliverFillRemaining(
+                  hasScrollBody: false,
                   child: Column(
                     children: [
                       const Spacer(),
@@ -61,53 +103,51 @@ class MarkupView extends StatelessWidget {
                           ),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(20),
-                            child: Image.asset(
-                              'assets/olearis.png',
-                            ),
+                            child: Image.asset('assets/olearis.png'),
                           ),
                         ),
                       ),
                       const Spacer(),
-                      Obx(() {
-                        return SizedBox(
-                          height: ((constraints.maxWidth - 30) / 8 + 10) *
-                                  (c.itemsCount.value / 2).ceil() +
-                              10,
-                          child: Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: GridView.builder(
-                              itemCount: c.itemsCount.value,
-                              shrinkWrap: true,
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                mainAxisSpacing: 10,
-                                crossAxisSpacing: 10,
-                                childAspectRatio: 4,
-                              ),
-                              itemBuilder: (BuildContext context, int index) {
-                                return Container(
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Colors.black, width: 2),
-                                  ),
-                                  child: GridTile(
-                                    child: Center(child: Text('Item $index')),
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                        );
-                      }),
                     ],
                   ),
                 ),
-              ),
-            );
-          }),
+              ],
+            ),
+          ),
         );
       },
     );
+  }
+}
+
+class KeepPositionScrollPhysics extends ScrollPhysics {
+  const KeepPositionScrollPhysics({super.parent});
+
+  @override
+  KeepPositionScrollPhysics applyTo(ScrollPhysics? ancestor) {
+    return KeepPositionScrollPhysics(parent: buildParent(ancestor));
+  }
+
+  @override
+  double adjustPositionForNewDimensions({
+    required ScrollMetrics oldPosition,
+    required ScrollMetrics newPosition,
+    required bool isScrolling,
+    required double velocity,
+  }) {
+    final position = super.adjustPositionForNewDimensions(
+      oldPosition: oldPosition,
+      newPosition: newPosition,
+      isScrolling: isScrolling,
+      velocity: velocity,
+    );
+
+    final diff = newPosition.maxScrollExtent - oldPosition.maxScrollExtent;
+
+    if (diff > 0) {
+      return position + diff;
+    } else {
+      return position;
+    }
   }
 }
