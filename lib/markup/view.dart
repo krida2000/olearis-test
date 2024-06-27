@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 import 'controller.dart';
 
@@ -20,7 +21,7 @@ class MarkupView extends StatelessWidget {
                 Icons.arrow_back,
                 color: Theme.of(context).colorScheme.onPrimary,
               ),
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () => context.pop(),
             ),
             title: Text(
               'Markup',

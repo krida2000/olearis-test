@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import 'markup/view.dart';
 import 'sign_in/view.dart';
@@ -12,7 +13,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    final router = GoRouter(
+      initialLocation: Routes.signIn,
+      routes: [
+        GoRoute(
+          path: Routes.signIn,
+          builder: (context, state) => const SignInView(),
+        ),
+        GoRoute(
+          path: Routes.markup,
+          builder: (context, state) => const MarkupView(),
+        ),
+      ],
+    );
+
+    return MaterialApp.router(
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: const ColorScheme.light(
@@ -49,11 +64,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
-      routes: {
-        Routes.signIn: (context) => const SignInView(),
-        Routes.markup: (context) => const MarkupView(),
-      },
-      initialRoute: '/signIn',
+      routerConfig: router,
     );
   }
 }

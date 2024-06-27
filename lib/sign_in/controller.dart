@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 import '/main.dart';
 
@@ -35,7 +36,7 @@ class SignInController extends GetxController {
       await Future.delayed(1.seconds);
 
       if (context.mounted) {
-        Navigator.of(context).pushNamed(Routes.markup);
+        context.push(Routes.markup);
       }
 
       signingIn.value = false;
